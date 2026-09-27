@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Search, Plus, Mail, Phone, Briefcase, X, UploadCloud, MessageSquare, FileText, Calendar, MapPin, Link, Globe, Clock, Edit2, Check, LayoutGrid, List as ListIcon } from 'lucide-react';
 
 const STAGE_ORDER = ['Applied', 'Screening', 'Interview', 'Offer', 'Hired'];
+const API_BASE = import.meta.env.VITE_API_URL || '';
 
 export default function App() {
   const [activeFilter, setActiveFilter] = useState('All Candidates');
@@ -53,7 +54,7 @@ export default function App() {
   const fetchCandidates = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch('/api/candidates');
+      const res = await fetch(`${API_BASE}/api/candidates`);
       const data = await res.json();
       if (data.success) {
         setCandidates(data.data.map((c: any) => ({
@@ -107,7 +108,7 @@ export default function App() {
     setIsSubmittingCandidate(true);
     
     try {
-      const res = await fetch('/api/candidates', {
+      const res = await fetch(`${API_BASE}/api/candidates`, {
         method: 'POST',
         // IMPORTANT: Let browser set multipart/form-data with boundary
         body: formData
@@ -152,8 +153,8 @@ export default function App() {
 
     try {
       const endpoint = newStage === 'Rejected' 
-        ? `/api/candidates/${candidateId}/reject` 
-        : `/api/candidates/${candidateId}/advance`;
+        ? `${API_BASE}/api/candidates/${candidateId}/reject` 
+        : `${API_BASE}/api/candidates/${candidateId}/advance`;
       
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -181,7 +182,7 @@ export default function App() {
   const saveCandidateDetails = async () => {
     try {
       setIsSavingDetails(true);
-      const res = await fetch(`/api/candidates/${selectedCandidate.id}`, {
+      const res = await fetch(`${API_BASE}/api/candidates/${selectedCandidate.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -194,7 +195,7 @@ export default function App() {
         setIsEditingDetails(false);
         await fetchCandidates();
         // Update selected candidate immediately from the API response
-        const fullRes = await fetch(`/api/candidates/${selectedCandidate.id}`);
+        const fullRes = await fetch(`${API_BASE}/api/candidates/${selectedCandidate.id}`);
         const fullData = await fullRes.json();
         if (fullData.success) {
           setSelectedCandidate({
@@ -276,7 +277,7 @@ export default function App() {
     setSearchType('loading');
     try {
       const stageParam = stage !== 'All Candidates' ? `&stage=${encodeURIComponent(stage)}` : '';
-      const res = await fetch(`/api/search?q=${encodeURIComponent(query.trim())}${stageParam}`);
+      const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(query.trim())}${stageParam}`);
       const data = await res.json();
       
       // If a newer search started while we were waiting, drop this response
@@ -1202,7 +1203,7 @@ export default function App() {
             </div>
             <div style={{ flex: 1, width: '100%', backgroundColor: '#525659' }}>
               <iframe 
-                src={`${viewingResumeUrl}#toolbar=0`}
+                src={`${viewingResumeUrl?.startsWith('http') ? viewingResumeUrl : API_BASE + viewingResumeUrl}#toolbar=0`}
                 width="100%" 
                 height="100%" 
                 style={{ border: 'none' }}
