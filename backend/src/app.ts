@@ -6,7 +6,14 @@ import searchRoutes from './routes/search';
 
 const app = express();
 
-app.use(cors());
+// Robust CORS allowing all origins, credentials, and preflight requests
+app.use(cors({
+  origin: true,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+}));
+
 app.use(express.json());
 
 // Request logging middleware

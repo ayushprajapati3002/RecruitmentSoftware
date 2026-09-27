@@ -20,7 +20,7 @@ export const searchController = {
       const result = await search(query, stage);
 
       if (result.type === 'invalid_query') {
-        return res.status(400).json({
+        return res.status(200).json({
           success: false,
           type: 'invalid_query',
           error: result.message,

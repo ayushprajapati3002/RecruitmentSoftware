@@ -16,6 +16,7 @@ export default function App() {
   const [nextStagePopupCandidate, setNextStagePopupCandidate] = useState<any>(null);
   const [feedbackText, setFeedbackText] = useState("");
   const [feedbackError, setFeedbackError] = useState(false);
+  const [isChangingStage, setIsChangingStage] = useState(false);
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
 
   // Resume Viewer State
@@ -151,6 +152,40 @@ export default function App() {
       return;
     }
 
+    // 1. Immediately close popup and show instant optimistic update
+    setNextStagePopupCandidate(null);
+    setIsChangingStage(true);
+
+    // Save previous state for rollback if network fails
+    const previousCandidates = [...candidates];
+    const previousSearchResults = searchResults ? [...searchResults] : null;
+
+    // Optimistically update candidate in state
+    const updateCandidateStage = (c: any) => {
+      if (c.id !== candidateId) return c;
+      const newHistoryEntry = {
+        title: newStage === 'Rejected' ? 'Moved to Rejected' : `Moved to ${newStage}`,
+        date: new Date().toLocaleString(),
+        rawDate: new Date().toISOString(),
+        feedback: feedbackText,
+        daysInStage: 0,
+      };
+      return {
+        ...c,
+        stage: newStage,
+        currentStage: newStage,
+        history: [newHistoryEntry, ...(c.history || [])],
+      };
+    };
+
+    setCandidates(prev => prev.map(updateCandidateStage));
+    if (searchResults) {
+      setSearchResults(prev => prev ? prev.map(updateCandidateStage) : null);
+    }
+    if (selectedCandidate && selectedCandidate.id === candidateId) {
+      setSelectedCandidate(updateCandidateStage(selectedCandidate));
+    }
+
     try {
       const endpoint = newStage === 'Rejected' 
         ? `${API_BASE}/api/candidates/${candidateId}/reject` 
@@ -163,19 +198,41 @@ export default function App() {
       });
       
       const data = await res.json();
-      if (data.success) {
-        await fetchCandidates();
-        setNextStagePopupCandidate(null);
-        if (selectedCandidate && selectedCandidate.id === candidateId) {
-          // Update the open modal candidate to reflect new history
-          setSelectedCandidate(null); // or re-fetch specific candidate
-        }
-      } else {
+      if (!data.success) {
+        // Rollback optimistic update
+        setCandidates(previousCandidates);
+        if (previousSearchResults) setSearchResults(previousSearchResults);
         alert("Failed to update: " + data.error);
+      } else {
+        // Silently sync with server in background without blocking UI
+        const refreshRes = await fetch(`${API_BASE}/api/candidates`);
+        const refreshData = await refreshRes.json();
+        if (refreshData.success) {
+          setCandidates(refreshData.data.map((c: any) => ({
+            ...c,
+            stage: c.currentStage,
+            history: c.history ? c.history.map((h: any) => ({
+              title: h.action === 'create' ? 'First Applied' : (h.action === 'reject' ? 'Moved to Rejected' : `Moved to ${h.toStage}`),
+              date: new Date(h.createdAt).toLocaleString(),
+              rawDate: h.createdAt,
+              feedback: h.notes
+            })).reverse().map((evt: any, i: number, arr: any[]) => {
+              const nextEvent = arr[i + 1];
+              const endTime = nextEvent ? new Date(nextEvent.rawDate).getTime() : Date.now();
+              const startTime = new Date(evt.rawDate).getTime();
+              const days = Math.floor((endTime - startTime) / (1000 * 60 * 60 * 24));
+              return { ...evt, daysInStage: days };
+            }).reverse() : []
+          })));
+        }
       }
     } catch (err) {
       console.error(err);
+      setCandidates(previousCandidates);
+      if (previousSearchResults) setSearchResults(previousSearchResults);
       alert("Network error.");
+    } finally {
+      setIsChangingStage(false);
     }
   };
 
@@ -598,6 +655,13 @@ export default function App() {
                               {c.vacancy}
                             </div>
 
+                            {c.phone && (
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: 'var(--text-secondary)' }}>
+                                <Phone size={11} style={{ flexShrink: 0 }} />
+                                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.phone}</span>
+                              </div>
+                            )}
+
                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: 'var(--text-secondary)' }}>
                               <Clock size={12} />
                               <span>{c.history?.[0]?.daysInStage === 0 ? '< 1 day' : `${c.history?.[0]?.daysInStage || 0} days`} in stage</span>
@@ -824,8 +888,9 @@ export default function App() {
                     className="btn-primary" 
                     style={{ width: '100%', justifyContent: 'center', padding: '12px' }}
                     onClick={() => handleStageChange(nextStagePopupCandidate.id, nextStage)}
+                    disabled={isChangingStage}
                   >
-                    Advance to {nextStage}
+                    {isChangingStage ? 'Updating...' : `Advance to ${nextStage}`}
                   </button>
                 )
               })()}
@@ -833,8 +898,9 @@ export default function App() {
                 className="btn-danger" 
                 style={{ width: '100%', justifyContent: 'center', padding: '12px' }}
                 onClick={() => handleStageChange(nextStagePopupCandidate.id, 'Rejected')}
+                disabled={isChangingStage}
               >
-                Mark as Rejected
+                {isChangingStage ? 'Updating...' : 'Mark as Rejected'}
               </button>
             </div>
           </div>

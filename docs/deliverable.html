@@ -6,7 +6,7 @@
   <style>
     @page {
       size: A4;
-      margin: 14mm 16mm;
+      margin: 12mm 14mm;
     }
 
     * {
@@ -19,22 +19,22 @@
       font-family: Arial, Helvetica, sans-serif;
       color: #111827;
       background: #ffffff;
-      line-height: 1.45;
-      font-size: 10.5pt;
+      line-height: 1.4;
+      font-size: 10pt;
     }
 
     h1 {
-      font-size: 17pt;
+      font-size: 16pt;
       color: #111827;
       margin-bottom: 2px;
       font-weight: bold;
     }
 
     .subtitle {
-      font-size: 10pt;
+      font-size: 9.5pt;
       color: #4b5563;
-      margin-bottom: 12px;
-      padding-bottom: 8px;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
       border-bottom: 1.5px solid #d1d5db;
     }
 
@@ -43,49 +43,49 @@
       border: 1px solid #d1d5db;
       border-radius: 4px;
       padding: 8px 12px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .github-box strong {
-      font-size: 10.5pt;
+      font-size: 10pt;
       color: #111827;
     }
 
     .github-box a {
       color: #1d4ed8;
       text-decoration: underline;
-      font-size: 10.5pt;
+      font-size: 10pt;
       word-break: break-all;
     }
 
     h2 {
-      font-size: 12pt;
+      font-size: 11.5pt;
       color: #111827;
-      margin-top: 14px;
-      margin-bottom: 6px;
-      padding-bottom: 3px;
+      margin-top: 12px;
+      margin-bottom: 5px;
+      padding-bottom: 2px;
       border-bottom: 1px solid #e5e7eb;
     }
 
     p {
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       color: #374151;
       text-align: justify;
     }
 
     ul, ol {
-      margin-left: 20px;
-      margin-bottom: 8px;
+      margin-left: 18px;
+      margin-bottom: 6px;
       color: #374151;
     }
 
     li {
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     code {
       font-family: Consolas, "Courier New", monospace;
-      font-size: 9.5pt;
+      font-size: 9pt;
       background: #f3f4f6;
       padding: 1px 4px;
       border-radius: 3px;
@@ -93,26 +93,31 @@
 
     pre {
       font-family: Consolas, "Courier New", monospace;
-      font-size: 9pt;
+      font-size: 8.5pt;
       background: #f9fafb;
       border: 1px solid #e5e7eb;
       padding: 6px 10px;
       border-radius: 4px;
-      margin: 6px 0;
+      margin: 5px 0;
       white-space: pre-wrap;
     }
 
     .disagreement-section {
       background: #fafafa;
-      border-left: 4px solid #4b5563;
+      border-left: 4px solid #ea580c;
       padding: 8px 12px;
-      margin: 8px 0;
+      margin: 6px 0;
     }
 
     .disagreement-section blockquote {
       font-style: italic;
-      color: #1f2937;
+      color: #431407;
+      background: #fff7ed;
+      border: 1px solid #ffedd5;
+      padding: 4px 8px;
+      border-radius: 3px;
       margin: 4px 0;
+      font-weight: 600;
     }
 
     .page-break {
@@ -129,11 +134,11 @@
 
   <!-- GITHUB REPOSITORY LINK -->
   <div class="github-box">
-    <strong>GitHub Repository Link:</strong><br>
-    <a href="https://github.com/ayushprajapati3002/RecruitmentSoftware">https://github.com/ayushprajapati3002/RecruitmentSoftware</a>
-    <div style="font-size: 9.5pt; color: #6b7280; margin-top: 4px;">
-      (Contains the full project source code, README setup guide, and the <code>AI_CHAT_LOGS/</code> directory)
-    </div>
+    <strong>Project Links &amp; Deliverables:</strong><br>
+    &bull; GitHub: <a href="https://github.com/ayushprajapati3002/RecruitmentSoftware">https://github.com/ayushprajapati3002/RecruitmentSoftware</a><br>
+    &bull; Live Frontend Demo: <a href="https://recruitment-software-joq491vti-ayush-kumars-projects-8e4c77e0.vercel.app/">recruitment-software.vercel.app</a><br>
+    &bull; Live Backend API: <a href="https://recruitment-backend-iotr.onrender.com/api/candidates">recruitment-backend.onrender.com</a><br>
+    &bull; AI Chat Logs: <a href="https://github.com/ayushprajapati3002/RecruitmentSoftware/blob/main/AI_CHAT_LOGS/README.md">AI_CHAT_LOGS/README.md</a>
   </div>
 
   <!-- 1. SUMMARY OF ARCHITECTURE -->
@@ -143,16 +148,16 @@
   </p>
   <ul>
     <li>
-      <strong>Frontend (React 19 + TypeScript + Vite):</strong> Provides an interactive candidate recruitment pipeline (Stages: <em>Applied &rarr; Screening &rarr; Interview &rarr; Offer &rarr; Hired</em>). It includes a conversational search bar that displays the interpreted search intent and feedback, plus a candidate detail dossier drawer. Styled using clean, responsive CSS tailored for all screen sizes (mobile, foldables, tablets, and desktop).
+      <strong>Frontend (React 19 + TypeScript + Vite):</strong> Provides an interactive candidate recruitment pipeline (Stages: <em>Applied &rarr; Screening &rarr; Interview &rarr; Offer &rarr; Hired</em>) in Kanban and List views. Features zero-lag optimistic UI updates, dynamic contextual suggestions, and direct candidate contact displays. Styled with clean Vanilla CSS (zero Tailwind bloat).
     </li>
     <li>
-      <strong>Backend (Express 5 + Node.js):</strong> RESTful API server with dedicated controllers for candidate CRUD, stage movement (advance/reject/archive), and search endpoints. Uses <code>Multer</code> to safely handle resume file uploads.
+      <strong>Backend (Express 5 + Node.js):</strong> RESTful API server with dedicated controllers for candidate CRUD, stage movement (advance/reject/archive), and search endpoints. Express 5 compatible CORS with credentials and Multer for resume storage.
     </li>
     <li>
-      <strong>Database (PostgreSQL + Prisma ORM):</strong> Stores candidates with normalized search fields (such as digits-only phone numbers) and an append-only, immutable <code>candidate_history</code> audit table that logs every stage transition with exact timestamps and actions.
+      <strong>Database (PostgreSQL + Prisma ORM + pg_trgm):</strong> Stores candidates with normalized search fields and an append-only, immutable <code>candidate_history</code> audit table. Native PostgreSQL trigram indexes (<code>pg_trgm</code>) handle fuzzy text matching and typo tolerance (e.g. <em>Priya Sharam</em> &rarr; <em>Priya Sharma</em>).
     </li>
     <li>
-      <strong>Natural Language Processing (Groq + Llama-3.3-70B):</strong> Recruiter queries like <em>"candidates in screening with 3+ years experience"</em> are translated in under 250ms into a deterministic JSON filter structure, which the backend safely executes as parameterized SQL queries.
+      <strong>Natural Language Processing (Groq Cloud):</strong> Translates recruiter queries like <em>"candidates in screening with 3+ years experience"</em> into deterministic JSON filter structures in under 250ms without hallucinating database rows.
     </li>
   </ul>
 
@@ -160,13 +165,13 @@
   <h2>2. How to Run the Application</h2>
   <ol>
     <li>
-      <strong>Prerequisites:</strong> Node.js (v18+ or v24+), a PostgreSQL database instance, and a free Groq API key.
+      <strong>Prerequisites:</strong> Node.js (v18+ or v24+), PostgreSQL database instance with <code>pg_trgm</code>, and a Groq API key.
     </li>
     <li>
       <strong>Backend Setup:</strong>
       <pre>cd backend
 npm install
-# Configure backend/.env with DATABASE_URL and GROQ_API_KEY
+# Configure backend/.env with DATABASE_URL, DIRECT_URL, and GROQ_API_KEY
 npx prisma db push
 npm run dev     # Runs on http://localhost:5000</pre>
     </li>
@@ -178,14 +183,20 @@ npm run dev     # Runs on http://localhost:5173</pre>
     </li>
   </ol>
 
-  <!-- PAGE BREAK FOR CLEAN 2-PAGE PRINT -->
+  <!-- PAGE BREAK FOR CLEAN PRINT -->
   <div class="page-break"></div>
 
   <!-- 3. DECISIONS MADE AND WHY -->
   <h2>3. Key Decisions Made and Why</h2>
   <ul>
     <li>
-      <strong>Groq Llama-3.3-70B for Natural Language Search:</strong> We chose high-speed cloud LLM inference over brittle regex parsing or local heavy Python NLP models. It extracts complex recruiter intents accurately with sub-250ms latency and outputs strict JSON without runtime overhead.
+      <strong>Pure Intent Parsing via Groq over Regex:</strong> We chose high-speed cloud LLM inference over brittle regex parsing or local heavy Python NLP models. It extracts complex recruiter intents accurately with sub-250ms latency and outputs strict JSON without runtime overhead.
+    </li>
+    <li>
+      <strong>PostgreSQL pg_trgm Fuzzy Search:</strong> Typo tolerance is resolved natively at the database index layer rather than via external vector databases or brittle hardcoded synonym maps.
+    </li>
+    <li>
+      <strong>Optimistic UI Updates:</strong> Stage movements update state immediately in React, closing modals with zero perceived delay while syncing with the server in the background.
     </li>
     <li>
       <strong>Immutable <code>CandidateHistory</code> Table:</strong> Instead of overwriting a single status column, every candidate movement (advance, reject, create) creates an append-only audit record with <code>onDelete: NoAction</code>. This guarantees a verifiable compliance history.
@@ -194,10 +205,7 @@ npm run dev     # Runs on http://localhost:5173</pre>
       <strong>Soft Deletes (<code>isArchived</code>):</strong> Candidates are never permanently purged from the database. Archiving retains full candidate profile history and past hiring evaluations for future openings.
     </li>
     <li>
-      <strong>Vanilla CSS Design System:</strong> Used custom CSS grid and flexbox without large UI libraries (like Tailwind or Bootstrap) to ensure total layout control across all device viewports, especially narrow phones and foldables.
-    </li>
-    <li>
-      <strong>Local Disk Uploads via Multer:</strong> Resumes are stored on disk with unique timestamp hashes rather than stored as large base64 strings in the database, avoiding database bloat.
+      <strong>Vanilla CSS Design System:</strong> Custom CSS grid and flexbox without large UI libraries ensures complete layout control across all device viewports, especially narrow phones and foldables.
     </li>
   </ul>
 
@@ -209,13 +217,13 @@ npm run dev     # Runs on http://localhost:5173</pre>
       During the implementation of the natural language search feature, the AI proposed a two-step parsing strategy starting with <em>"Step 1: Offline Rule-Based NLP"</em>. The AI wrote regular expression heuristics (e.g., <code>/(applied|screening|interview|offer|hired)/i</code>, <code>/(\d+)\+?\s*years?/i</code>) to intercept queries before passing them to the model.
     </p>
     <blockquote>
-      <strong>My Directive:</strong> "Don't want this Step 1: Offline Rule-Base NLP. Remove the changes of step 1 only."
+      <strong>My Directive:</strong> "Don't want this Step 1: Offline Rule-Based NLP. Remove the changes of step 1 only."
     </blockquote>
     <p><strong>Why I Disagreed:</strong></p>
     <ul>
       <li><strong>False Positives:</strong> Natural conversational recruiter queries (such as <em>"candidates who passed screening for backend developer"</em>) easily trick simple regex patterns, confusing notes or job descriptions with pipeline stages.</li>
       <li><strong>Duplicate Maintenance:</strong> Having both a rigid regex ruleset and an LLM pipeline introduces duplicate parsing logic and edge cases.</li>
-      <li><strong>Speed:</strong> Because Groq's Llama-3 model responds in under 250ms, a fragile offline regex fallback was completely unnecessary. I insisted on a single, clean pipeline where the LLM produces a strict JSON schema and the backend constructs parameterized SQL queries.</li>
+      <li><strong>Speed:</strong> Because Groq executes model inference in under 250ms, a fragile offline regex fallback was completely unnecessary. I insisted on a single, clean pipeline where the LLM produces a strict JSON schema and PostgreSQL performs retrieval and fuzzy matching.</li>
     </ul>
   </div>
 
