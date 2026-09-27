@@ -25,7 +25,9 @@ app.use((req, res, next) => {
 // API Routes
 app.use('/api/candidates', candidateRoutes);
 app.use('/api/search', searchRoutes);
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
+const uploadsStaticDir = path.resolve(process.cwd(), 'uploads');
+app.use('/uploads', express.static(uploadsStaticDir));
 
 // Error handling middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

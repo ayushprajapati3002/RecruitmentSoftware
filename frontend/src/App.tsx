@@ -1258,7 +1258,7 @@ export default function App() {
                 <button 
                   className="btn-secondary" 
                   style={{ padding: '6px 12px', fontSize: '12px' }}
-                  onClick={() => window.open(viewingResumeUrl, "_blank")}
+                  onClick={() => window.open(viewingResumeUrl?.startsWith('http') ? viewingResumeUrl : API_BASE + viewingResumeUrl, "_blank")}
                 >
                   Open in New Tab
                 </button>
