@@ -1,5 +1,5 @@
 import prisma from '../config/database';
-import { getNextStage, validateReject, validateTransition } from '../utils/stageUtils';
+import { getNextStage, validateReject } from '../utils/stageUtils';
 import { CreateCandidateInput, CandidateModel } from '../models/Candidate';
 
 export const PipelineService = {

@@ -33,13 +33,13 @@ A modern, high-performance Recruitment Candidate Management and Natural Language
 ## 🏗️ System Architecture Overview
 
 ```mermaid
-graph TD
-    A[React 19 + TypeScript Frontend] -->|REST API / JSON| B[Express 5 / Node.js Backend]
-    B -->|Groq SDK / Llama-3.3-70B| C[Groq LLM Cloud Engine]
-    C -->|Structured JSON Query Schema| B
-    B -->|Prisma Client / Raw SQL Queries| D[(PostgreSQL Database)]
-    D -->|Indexed Records & Audit Trail| B
-    B -->|Filtered Candidates + Explanations| A
+flowchart TD
+    Client[React 19 Frontend] -->|1. User Search / Pipeline Action| API[Express 5 Backend]
+    API -->|2. Natural Language Query| LLM[Groq Cloud LLM]
+    LLM -->|3. Strict JSON Filter Schema| API
+    API -->|4. Parameterized SQL / ORM| DB[(PostgreSQL Database)]
+    DB -->|5. Indexed Candidates & History| API
+    API -->|6. Results & Match Explanations| Client
 ```
 
 ### Components:

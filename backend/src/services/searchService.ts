@@ -1,11 +1,10 @@
-import { PrismaClient, Prisma, Candidate } from '@prisma/client';
+import { Prisma, Candidate } from '@prisma/client';
+import prisma from '../config/database';
 import { SearchFilters, GeminiSearchResult } from './nlpService';
 import { normalizePhone } from '../utils/dateUtils';
 
 // Re-export SearchFilters for consumers
 export type { SearchFilters } from './nlpService';
-
-const prisma = new PrismaClient();
 
 export interface RankedCandidate extends Candidate {
   _score: number;

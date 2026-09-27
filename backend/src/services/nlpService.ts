@@ -202,7 +202,7 @@ export async function interpretWithAI(query: string): Promise<GeminiSearchResult
         { role: 'system', content: buildSystemPrompt() },
         { role: 'user', content: `Query: "${query}"` },
       ],
-      model: 'qwen/qwen3.8-27b',
+      model: 'llama-3.3-70b-versatile',
       temperature: 0,
       max_tokens: 500,
       response_format: { type: 'json_object' },
