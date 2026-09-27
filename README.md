@@ -5,6 +5,8 @@ A modern, high-performance Recruitment Candidate Management and Natural Language
 ---
 
 ## 🔗 Repository & Deliverables
+- **Live Application Demo (Frontend)**: [https://recruitment-software-joq491vti-ayush-kumars-projects-8e4c77e0.vercel.app/](https://recruitment-software-joq491vti-ayush-kumars-projects-8e4c77e0.vercel.app/)
+- **Live API Service (Render Backend)**: [https://recruitment-backend-iotr.onrender.com/api/candidates](https://recruitment-backend-iotr.onrender.com/api/candidates)
 - **GitHub Repository**: [https://github.com/ayushprajapati3002/RecruitmentSoftware](https://github.com/ayushprajapati3002/RecruitmentSoftware)
 - **Architecture Documentation**: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - **Architecture PDF Summary**: [docs/Recruitment_Software_Architecture.pdf](docs/Recruitment_Software_Architecture.pdf)
