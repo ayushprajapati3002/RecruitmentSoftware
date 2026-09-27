@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Candidate {
+  id           Int      @id @default(autoincrement())
+  name         String   @db.VarChar(100)
+  email        String   @unique @db.VarChar(100)
+  phone        String?  @db.VarChar(20)
+  phoneNorm    String?  @map("phone_normalized") @db.VarChar(20) // digits-only for search
+  dob          String?  @db.VarChar(20)
+  address      String?  @db.VarChar(255)
+  linkedin     String?  @db.VarChar(255)
+  github       String?  @db.VarChar(255)
+  experience   String?  @db.VarChar(20)
+  skills       String[]
+  vacancy      String   @db.VarChar(200)
+  resumeUrl    String?  @map("resume_url")
+  location     String?  @db.VarChar(100)
+  notes        String?
+  currentStage String   @default("Applied") @map("current_stage") @db.VarChar(20)
+  isArchived   Boolean  @default(false) @map("is_archived") // soft-delete, NEVER hard-delete
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  history CandidateHistory[]
+
+  @@map("candidates")
+}
+
+model CandidateHistory {
+  id          Int      @id @default(autoincrement())
+  candidateId Int      @map("candidate_id")
+  fromStage   String?  @map("from_stage") @db.VarChar(20) // NULL for initial create
+  toStage     String   @map("to_stage") @db.VarChar(20)
+  action      String?  @db.VarChar(50) // "create" | "advance" | "reject"
+  notes       String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  // ⚠️ NO updatedAt — this table is APPEND-ONLY, IMMUTABLE
+  // ⚠️ onDelete: NoAction — history survives even if candidate is archived
+
+  candidate Candidate @relation(fields: [candidateId], references: [id], onDelete: NoAction)
+
+  @@map("candidate_history")
+}

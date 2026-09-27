@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Architecture & System Design - Recruitment Platform</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    @page {
+      size: A4;
+      margin: 12mm 14mm 12mm 14mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      line-height: 1.42;
+      font-size: 12.5px;
+    }
+
+    .header-banner {
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .title-area h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+      margin-bottom: 2px;
+    }
+
+    .title-area h2 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #3b82f6;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .meta-box {
+      text-align: right;
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .meta-box a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .section {
+      margin-bottom: 14px;
+      break-inside: avoid;
+    }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      border-left: 4px solid #3b82f6;
+      padding-left: 8px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    p {
+      color: #334155;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+      margin-bottom: 14px;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card p {
+      font-size: 12px;
+      color: #475569;
+      margin-bottom: 0;
+    }
+
+    .diagram-container {
+      background: #0f172a;
+      color: #f1f5f9;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      line-height: 1.35;
+      margin: 8px 0;
+      overflow: hidden;
+      white-space: pre;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0;
+      font-size: 11.5px;
+    }
+
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 1px 6px;
+      font-size: 10px;
+      font-weight: 600;
+      border-radius: 4px;
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .badge-decision {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .disagreement-callout {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid #2563eb;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-top: 6px;
+    }
+
+    .disagreement-callout h4 {
+      color: #1e40af;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .disagreement-callout blockquote {
+      font-style: italic;
+      color: #1e3a8a;
+      margin: 3px 0 4px 0;
+      padding-left: 8px;
+      border-left: 2px solid #93c5fd;
+      font-size: 11px;
+    }
+
+    .footer {
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10.5px;
+      color: #94a3b8;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header-banner">
+    <div class="title-area">
+      <h1>Recruitment Management System</h1>
+      <h2>System Architecture & Technical Design Specification</h2>
+    </div>
+    <div class="meta-box">
+      <strong>Deliverable Documentation</strong><br>
+      GitHub Repo: <a href="https://github.com/Ayush/RecruitmentSoftware">github.com/Ayush/RecruitmentSoftware</a><br>
+      Stack: React 19 • Express 5 • PostgreSQL • Groq Llama-3
+    </div>
+  </div>
+
+  <!-- SECTION 1: SYSTEM OVERVIEW & ARCHITECTURE -->
+  <div class="section">
+    <h3>1. Architecture & Component Interaction</h3>
+    <p>
+      The Recruitment Management System follows a decoupled, resilient full-stack architecture built to manage applicant pipelines and execute natural language queries with sub-second response times.
+    </p>
+
+    <div class="diagram-container">
++-----------------------------------------------------------------------------------------+
+|                                    REACT 19 CLIENT                                      |
+|    - Kanban/List Pipeline (Applied -> Screening -> Interview -> Offer -> Hired)         |
+|    - Natural Language Search Bar with Query Parsing Diagnostics & Stage Metrics         |
+|    - Dynamic Dossier Drawer, Micro-animations, Fully Responsive Layout (Foldable/Mobile)|
++-------------------------------------------+---------------------------------------------+
+                                            | REST API (JSON)
+                                            v
++-----------------------------------------------------------------------------------------+
+|                                  EXPRESS 5 API SERVER                                   |
+|       Routes: /api/candidates, /api/search           Storage: Local Multer Disk         |
+|       - Parameterized SQL Query Builders             - Centralized Error Handling       |
++---------------------+-----------------------------------------------+-------------------+
+                      |                                               |
+         Prisma ORM / | Safe Parameterized SQL                        | SDK Prompt / JSON
+                      v                                               v
++------------------------------------------+  +-------------------------------------------+
+|           POSTGRESQL DATABASE            |  |             GROQ CLOUD ENGINE             |
+|  - candidates (Indexed Search Fields)    |  |  - Model: Llama-3.3-70b-versatile         |
+|  - candidate_history (Immutable Audit)   |  |  - Output: Strict JSON Schema Filters     |
+|  - Soft-delete flag (isArchived)         |  |  - Latency: &lt;250ms Token Generation      |
++------------------------------------------+  +-------------------------------------------+
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h4>Client Layer (React 19)</h4>
+        <p>Built with Vite and TypeScript. Eliminates CSS frameworks in favor of handcrafted CSS tokens for fluid responsiveness across mobile devices, foldables, and desktop screens.</p>
+      </div>
+      <div class="card">
+        <h4>Server Layer (Node.js & Express 5)</h4>
+        <p>Utilizes Controller-Service layering. Isolates route endpoints from database query generation and Groq LLM token streaming.</p>
+      </div>
+      <div class="card">
+        <h4>Persistence (PostgreSQL + Prisma)</h4>
+        <p>Features an append-only <code>candidate_history</code> audit table with <code>onDelete: NoAction</code> to ensure legal audit trail retention across status changes.</p>
+      </div>
+      <div class="card">
+        <h4>AI Engine (Groq Llama-3.3-70B)</h4>
+        <p>Fast LLM inference converting natural-language recruiter prompts into typed JSON filter objects consumed directly by database query builders.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 2: KEY ARCHITECTURAL DECISIONS -->
+  <div class="section">
+    <h3>2. Architectural Decisions & Technical Trade-Offs</h3>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 28%;">Decision</th>
+          <th style="width: 32%;">Alternative Considered</th>
+          <th style="width: 40%;">Rationale</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Groq Llama-3.3-70B Query Engine</strong></td>
+          <td>Client/Server Regex heuristics, standard Gemini Flash, or local Python spaCy</td>
+          <td><span class="badge badge-decision">Optimal Latency & Reasoning</span> Sub-250ms response speed. Zero heavy local Python runtime dependencies. Discards brittle regex parsing while accurately interpreting colloquial recruiter terminology.</td>
+        </tr>
+        <tr>
+          <td><strong>Immutable Audit History Table</strong></td>
+          <td>Single updated_at timestamp or mutable status column</td>
+          <td><span class="badge badge-decision">Compliance & Integrity</span> Recruitment compliance requires non-repudiation. Every stage move (Applied ➔ Screening ➔ Interview ➔ Offer ➔ Hired) creates an immutable record.</td>
+        </tr>
+        <tr>
+          <td><strong>Pure Vanilla CSS Design System</strong></td>
+          <td>Tailwind CSS / Component Libraries (MUI/Chakra)</td>
+          <td><span class="badge badge-decision">Precise Responsive Control</span> Custom responsive grid and flex mechanics engineered for ultra-narrow mobile viewports and dual-screen foldables without CSS specificity bloat.</td>
+        </tr>
+        <tr>
+          <td><strong>Disk-Based Resume Storage via Multer</strong></td>
+          <td>PostgreSQL BYTEA / Base64 DB blobs</td>
+          <td><span class="badge badge-decision">Storage Scalability</span> Prevents database index bloat and high backup I/O overhead. Static asset serving via Express provides low latency.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 3: AI DISAGREEMENT CASE STUDY -->
+  <div class="section">
+    <h3>3. AI Collaboration & Key Disagreement Case Study</h3>
+    <div class="disagreement-callout">
+      <h4>Engineering Case Study: Rejecting Rule-Based Offline Regex Parsing</h4>
+      <p>
+        <strong>The AI Proposal:</strong> During the search engine implementation, the AI proposed a "Step 1: Offline Rule-Based NLP" layer that attempted to match keywords with regular expressions (e.g., <code>/(applied|screening|interview|offer|hired)/i</code>, <code>/(\d+)\+?\s*years?/i</code>) before delegating to the LLM.
+      </p>
+      <blockquote>
+        "Don't want this Step 1: Offline Rule-Based NLP. Remove the changes of step 1 only." — Engineer Direction
+      </blockquote>
+      <p>
+        <strong>Engineering Rationale for Disagreement:</strong>
+      </p>
+      <ul style="margin-left: 20px; font-size: 12.5px; color: #334155; line-height: 1.6;">
+        <li><strong>Semantic Ambiguity:</strong> Conversational recruiter queries (e.g. <em>"candidates who did screening in frontend"</em>) trigger false positives with keyword matching (matching "screening" as candidate notes rather than stage status).</li>
+        <li><strong>Duplicate Maintenance Burden:</strong> Maintaining a fragile regex parser alongside an LLM causes divergent parsing rules and edge-case fragility.</li>
+        <li><strong>Latency Reality:</strong> With Groq's high-speed inference (<250ms latency), the LLM round-trip is fast enough for real-time querying, rendering rule-based pre-filtering obsolete.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 4: ROADMAP -->
+  <div class="section">
+    <h3>4. Future Roadmap & What We'd Build With More Time</h3>
+    <div class="card-grid">
+      <div class="card">
+        <h4>1. Semantic Vector Search (pgvector)</h4>
+        <p>Implement hybrid search combining structured SQL filters with dense embeddings over resumes and candidate interview notes.</p>
+      </div>
+      <div class="card">
+        <h4>2. Automated Resume OCR & Parsing</h4>
+        <p>Deploy background workers using LLM vision/text extraction to automatically extract skills, contact details, and experience upon PDF upload.</p>
+      </div>
+      <div class="card">
+        <h4>3. Real-Time Pipeline WebSockets</h4>
+        <p>Integrate Server-Sent Events (SSE) or Socket.io to synchronize candidate movements across collaborative hiring teams in real time.</p>
+      </div>
+      <div class="card">
+        <h4>4. Multi-Tenant Role-Based Access Control</h4>
+        <p>Granular RBAC tiers (Admin, Hiring Manager, Recruiter, Reviewer) with organization-level data segregation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>Recruitment Management System - Architecture Summary</span>
+    <span>GitHub Repository: https://github.com/Ayush/RecruitmentSoftware</span>
+  </div>
+
+</body>
+</html>

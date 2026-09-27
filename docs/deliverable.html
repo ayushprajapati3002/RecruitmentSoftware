@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Project Deliverable - Recruitment Management System</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 14mm 16mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111827;
+      background: #ffffff;
+      line-height: 1.45;
+      font-size: 10.5pt;
+    }
+
+    h1 {
+      font-size: 17pt;
+      color: #111827;
+      margin-bottom: 2px;
+      font-weight: bold;
+    }
+
+    .subtitle {
+      font-size: 10pt;
+      color: #4b5563;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid #d1d5db;
+    }
+
+    .github-box {
+      background-color: #f3f4f6;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      padding: 8px 12px;
+      margin-bottom: 14px;
+    }
+
+    .github-box strong {
+      font-size: 10.5pt;
+      color: #111827;
+    }
+
+    .github-box a {
+      color: #1d4ed8;
+      text-decoration: underline;
+      font-size: 10.5pt;
+      word-break: break-all;
+    }
+
+    h2 {
+      font-size: 12pt;
+      color: #111827;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      padding-bottom: 3px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    p {
+      margin-bottom: 6px;
+      color: #374151;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin-left: 20px;
+      margin-bottom: 8px;
+      color: #374151;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 9.5pt;
+      background: #f3f4f6;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+
+    pre {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 9pt;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      padding: 6px 10px;
+      border-radius: 4px;
+      margin: 6px 0;
+      white-space: pre-wrap;
+    }
+
+    .disagreement-section {
+      background: #fafafa;
+      border-left: 4px solid #4b5563;
+      padding: 8px 12px;
+      margin: 8px 0;
+    }
+
+    .disagreement-section blockquote {
+      font-style: italic;
+      color: #1f2937;
+      margin: 4px 0;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Recruitment Management System — Deliverable Report</h1>
+  <div class="subtitle">
+    Candidate Pipeline Tracker &amp; Natural Language Search Platform
+  </div>
+
+  <!-- GITHUB REPOSITORY LINK -->
+  <div class="github-box">
+    <strong>GitHub Repository Link:</strong><br>
+    <a href="https://github.com/ayushprajapati3002/RecruitmentSoftware">https://github.com/ayushprajapati3002/RecruitmentSoftware</a>
+    <div style="font-size: 9.5pt; color: #6b7280; margin-top: 4px;">
+      (Contains the full project source code, README setup guide, and the <code>AI_CHAT_LOGS/</code> directory)
+    </div>
+  </div>
+
+  <!-- 1. SUMMARY OF ARCHITECTURE -->
+  <h2>1. Summary of Architecture</h2>
+  <p>
+    The system is built as a modular client-server web application designed for high responsiveness, pipeline traceability, and fast conversational recruiter querying:
+  </p>
+  <ul>
+    <li>
+      <strong>Frontend (React 19 + TypeScript + Vite):</strong> Provides an interactive candidate recruitment pipeline (Stages: <em>Applied &rarr; Screening &rarr; Interview &rarr; Offer &rarr; Hired</em>). It includes a conversational search bar that displays the interpreted search intent and feedback, plus a candidate detail dossier drawer. Styled using clean, responsive CSS tailored for all screen sizes (mobile, foldables, tablets, and desktop).
+    </li>
+    <li>
+      <strong>Backend (Express 5 + Node.js):</strong> RESTful API server with dedicated controllers for candidate CRUD, stage movement (advance/reject/archive), and search endpoints. Uses <code>Multer</code> to safely handle resume file uploads.
+    </li>
+    <li>
+      <strong>Database (PostgreSQL + Prisma ORM):</strong> Stores candidates with normalized search fields (such as digits-only phone numbers) and an append-only, immutable <code>candidate_history</code> audit table that logs every stage transition with exact timestamps and actions.
+    </li>
+    <li>
+      <strong>Natural Language Processing (Groq + Llama-3.3-70B):</strong> Recruiter queries like <em>"candidates in screening with 3+ years experience"</em> are translated in under 250ms into a deterministic JSON filter structure, which the backend safely executes as parameterized SQL queries.
+    </li>
+  </ul>
+
+  <!-- 2. HOW TO RUN IT -->
+  <h2>2. How to Run the Application</h2>
+  <ol>
+    <li>
+      <strong>Prerequisites:</strong> Node.js (v18+ or v24+), a PostgreSQL database instance, and a free Groq API key.
+    </li>
+    <li>
+      <strong>Backend Setup:</strong>
+      <pre>cd backend
+npm install
+# Configure backend/.env with DATABASE_URL and GROQ_API_KEY
+npx prisma db push
+npm run dev     # Runs on http://localhost:5000</pre>
+    </li>
+    <li>
+      <strong>Frontend Setup:</strong>
+      <pre>cd frontend
+npm install
+npm run dev     # Runs on http://localhost:5173</pre>
+    </li>
+  </ol>
+
+  <!-- PAGE BREAK FOR CLEAN 2-PAGE PRINT -->
+  <div class="page-break"></div>
+
+  <!-- 3. DECISIONS MADE AND WHY -->
+  <h2>3. Key Decisions Made and Why</h2>
+  <ul>
+    <li>
+      <strong>Groq Llama-3.3-70B for Natural Language Search:</strong> We chose high-speed cloud LLM inference over brittle regex parsing or local heavy Python NLP models. It extracts complex recruiter intents accurately with sub-250ms latency and outputs strict JSON without runtime overhead.
+    </li>
+    <li>
+      <strong>Immutable <code>CandidateHistory</code> Table:</strong> Instead of overwriting a single status column, every candidate movement (advance, reject, create) creates an append-only audit record with <code>onDelete: NoAction</code>. This guarantees a verifiable compliance history.
+    </li>
+    <li>
+      <strong>Soft Deletes (<code>isArchived</code>):</strong> Candidates are never permanently purged from the database. Archiving retains full candidate profile history and past hiring evaluations for future openings.
+    </li>
+    <li>
+      <strong>Vanilla CSS Design System:</strong> Used custom CSS grid and flexbox without large UI libraries (like Tailwind or Bootstrap) to ensure total layout control across all device viewports, especially narrow phones and foldables.
+    </li>
+    <li>
+      <strong>Local Disk Uploads via Multer:</strong> Resumes are stored on disk with unique timestamp hashes rather than stored as large base64 strings in the database, avoiding database bloat.
+    </li>
+  </ul>
+
+  <!-- 4. WHERE WE DISAGREED WITH THE AI -->
+  <h2>4. AI Collaboration: Where I Disagreed with the AI</h2>
+  <div class="disagreement-section">
+    <p><strong>The Incident: Rule-Based Offline Regex Parsing vs. Pure LLM Intent Extraction</strong></p>
+    <p>
+      During the implementation of the natural language search feature, the AI proposed a two-step parsing strategy starting with <em>"Step 1: Offline Rule-Based NLP"</em>. The AI wrote regular expression heuristics (e.g., <code>/(applied|screening|interview|offer|hired)/i</code>, <code>/(\d+)\+?\s*years?/i</code>) to intercept queries before passing them to the model.
+    </p>
+    <blockquote>
+      <strong>My Directive:</strong> "Don't want this Step 1: Offline Rule-Base NLP. Remove the changes of step 1 only."
+    </blockquote>
+    <p><strong>Why I Disagreed:</strong></p>
+    <ul>
+      <li><strong>False Positives:</strong> Natural conversational recruiter queries (such as <em>"candidates who passed screening for backend developer"</em>) easily trick simple regex patterns, confusing notes or job descriptions with pipeline stages.</li>
+      <li><strong>Duplicate Maintenance:</strong> Having both a rigid regex ruleset and an LLM pipeline introduces duplicate parsing logic and edge cases.</li>
+      <li><strong>Speed:</strong> Because Groq's Llama-3 model responds in under 250ms, a fragile offline regex fallback was completely unnecessary. I insisted on a single, clean pipeline where the LLM produces a strict JSON schema and the backend constructs parameterized SQL queries.</li>
+    </ul>
+  </div>
+
+  <!-- 5. WHAT I'D DO WITH MORE TIME -->
+  <h2>5. What I'd Do With More Time</h2>
+  <ul>
+    <li>
+      <strong>Semantic Vector Search (pgvector):</strong> Add vector embeddings over candidate resumes and interview notes to allow conceptual queries like <em>"find candidates with leadership experience in cloud migrations"</em>.
+    </li>
+    <li>
+      <strong>Automated Resume OCR &amp; Parsing:</strong> Automatically parse uploaded PDF/Word resumes to auto-fill skills, work history, and contact information.
+    </li>
+    <li>
+      <strong>Interview Scheduling Integration:</strong> Integrate Google Calendar / Outlook APIs to let recruiters send interview invitations and view open slots directly from the candidate card.
+    </li>
+    <li>
+      <strong>Real-time Multi-Recruiter Sync:</strong> Use WebSockets or Server-Sent Events (SSE) so stage changes and notes update live for all recruiters viewing the board.
+    </li>
+    <li>
+      <strong>Role-Based Access Control (RBAC):</strong> Add distinct permissions for Admins, Hiring Managers, and Interviewers.
+    </li>
+  </ul>
+
+</body>
+</html>
