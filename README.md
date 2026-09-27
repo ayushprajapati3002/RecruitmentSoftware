@@ -33,13 +33,22 @@ A modern, high-performance Recruitment Candidate Management and Natural Language
 ## 🏗️ System Architecture Overview
 
 ```mermaid
-flowchart TD
-    Client[React 19 Frontend] -->|1. User Search / Pipeline Action| API[Express 5 Backend]
-    API -->|2. Natural Language Query| LLM[Groq Cloud LLM]
-    LLM -->|3. Strict JSON Filter Schema| API
-    API -->|4. Parameterized SQL / ORM| DB[(PostgreSQL Database)]
-    DB -->|5. Indexed Candidates & History| API
-    API -->|6. Results & Match Explanations| Client
+sequenceDiagram
+    autonumber
+    actor User as Recruiter
+    participant Frontend as React 19 Client
+    participant Backend as Express 5 Backend
+    participant Groq as Groq (Llama-3.3-70B)
+    participant DB as PostgreSQL (Prisma)
+
+    User->>Frontend: Enters query ("5+ yrs React in Interview")
+    Frontend->>Backend: GET /api/search?q=...
+    Backend->>Groq: Prompt query for intent & filters
+    Groq-->>Backend: Strict JSON schema {experienceMin: 5, ...}
+    Backend->>DB: Parameterized SQL (pg_trgm & stage match)
+    DB-->>Backend: Matched candidates + history records
+    Backend-->>Frontend: JSON results + match explanation
+    Frontend-->>User: Renders ranked dossier cards & filters
 ```
 
 ### Components:
